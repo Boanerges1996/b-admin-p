@@ -1,19 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { PageRoutes } from "@/constants";
 import { setSelectedItem } from "@/store/reducers/sidebar";
 import Link from "next/link";
 import { AiOutlineFlag, AiOutlineWechat } from "react-icons/ai";
-import { BsPinMapFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiAlertTriangle, FiSettings } from "react-icons/fi";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { MdAdminPanelSettings, MdOutlineSpaceDashboard } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
+import HeaderTextPart from "./HeaderTextPart";
 import { getItem } from "./constants";
 const { Header, Sider, Content } = Layout;
 
@@ -81,25 +80,15 @@ export function DashboardLayout({ children }) {
                 className: "pointer-events-none",
               },
               getItem(
-                "Users",
+                "Students",
                 "2-1",
-                <Link href={PageRoutes.USERS}>
+                <Link href={PageRoutes.STUDENTS}>
                   <HiOutlineUserGroup />
                 </Link>,
                 undefined,
                 undefined,
                 () => {
                   dispatch(setSelectedItem("2-1"));
-                }
-              ),
-              getItem(
-                <Link href={PageRoutes.GOD_VIEW}>God View</Link>,
-                "1-3",
-                <BsPinMapFill />,
-                undefined,
-                undefined,
-                () => {
-                  dispatch(setSelectedItem("1-3"));
                 }
               ),
               {
@@ -173,14 +162,13 @@ export function DashboardLayout({ children }) {
           />
         </Sider>
         <Layout className="site-layout">
-          <Header style={{ padding: 0, background: colorBgContainer }}>
-            {React.createElement(
-              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: "trigger",
-                onClick: () => setCollapsed(!collapsed),
-              }
-            )}
+          <Header style={{ background: colorBgContainer, paddingLeft: "10px" }}>
+            <HeaderTextPart
+              collapsed={collapsed}
+              onCollapse={() => {
+                setCollapsed(!collapsed);
+              }}
+            />
           </Header>
           <Content
             style={{

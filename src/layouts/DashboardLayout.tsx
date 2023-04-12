@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, Row, theme } from "antd";
 import { useState } from "react";
 
 import { PageRoutes } from "@/constants";
@@ -14,13 +14,17 @@ import { MdAdminPanelSettings, MdOutlineSpaceDashboard } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import HeaderTextPart from "./HeaderTextPart";
 import { getItem } from "./constants";
+import dynamic from "next/dynamic";
 const { Header, Sider, Content } = Layout;
+
+const HeaderIcons = dynamic(() => import("./HeaderIcons"), { ssr: false });
 
 export function DashboardLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const isCollapsed = useAppSelector((state) => state.sidebar.sidebarOpen);
   const selectedItem = useAppSelector((state) => state.sidebar.selectedItem);
   const dispatch = useAppDispatch();
+  const imageUrl = useAppSelector((state) => state.admin.pic);
 
   const {
     token: { colorBgContainer },
@@ -91,6 +95,7 @@ export function DashboardLayout({ children }) {
                   dispatch(setSelectedItem("2-1"));
                 }
               ),
+
               {
                 key: "3",
                 label: "EXTRAS",
@@ -109,7 +114,6 @@ export function DashboardLayout({ children }) {
                   dispatch(setSelectedItem("3-2"));
                 }
               ),
-
               getItem(
                 "Alerts",
                 "3-3",
@@ -162,13 +166,22 @@ export function DashboardLayout({ children }) {
           />
         </Sider>
         <Layout className="site-layout">
-          <Header style={{ background: colorBgContainer, paddingLeft: "10px" }}>
-            <HeaderTextPart
-              collapsed={collapsed}
-              onCollapse={() => {
-                setCollapsed(!collapsed);
-              }}
-            />
+          <Header
+            style={{
+              background: colorBgContainer,
+              paddingLeft: "10px",
+              paddingRight: "10px",
+            }}
+          >
+            <Row>
+              <HeaderTextPart
+                collapsed={collapsed}
+                onCollapse={() => {
+                  setCollapsed(!collapsed);
+                }}
+              />
+              <HeaderIcons imageUrl={imageUrl} />
+            </Row>
           </Header>
           <Content
             style={{

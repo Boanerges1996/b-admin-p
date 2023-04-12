@@ -1,12 +1,14 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { Layout, Menu, Row, theme } from "antd";
-import { useState } from "react";
-
 import { PageRoutes } from "@/constants";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setSelectedItem } from "@/store/reducers/sidebar";
+import { Layout, Menu, Row, theme } from "antd";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useState } from "react";
 import { AiOutlineFlag, AiOutlineWechat } from "react-icons/ai";
+import { BsBook, BsNewspaper } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import { FaRegComments, FaSchool } from "react-icons/fa";
 import { FiAlertTriangle, FiSettings } from "react-icons/fi";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { IoMdNotificationsOutline } from "react-icons/io";
@@ -14,21 +16,29 @@ import { MdAdminPanelSettings, MdOutlineSpaceDashboard } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import HeaderTextPart from "./HeaderTextPart";
 import { getItem } from "./constants";
-import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 const { Header, Sider, Content } = Layout;
 
 const HeaderIcons = dynamic(() => import("./HeaderIcons"), { ssr: false });
 
-export function DashboardLayout({ children }) {
+const DashboardLay = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const isCollapsed = useAppSelector((state) => state.sidebar.sidebarOpen);
   const selectedItem = useAppSelector((state) => state.sidebar.selectedItem);
   const dispatch = useAppDispatch();
   const imageUrl = useAppSelector((state) => state.admin.pic);
+  const navigate = useRouter();
+
+  const logged = useAppSelector((state) => state.admin.logged);
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  if (!logged) {
+    navigate.push(PageRoutes.HOME);
+  }
+
   return (
     <div className="h-[100vh]">
       <Layout className="h-[100vh]">
@@ -95,7 +105,6 @@ export function DashboardLayout({ children }) {
                   dispatch(setSelectedItem("2-1"));
                 }
               ),
-
               {
                 key: "3",
                 label: "EXTRAS",
@@ -197,4 +206,8 @@ export function DashboardLayout({ children }) {
       </Layout>
     </div>
   );
-}
+};
+
+export const DashboardLayout = dynamic(() => Promise.resolve(DashboardLay), {
+  ssr: false,
+});

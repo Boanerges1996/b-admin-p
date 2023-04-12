@@ -40,7 +40,7 @@ export default function HeaderTextPart(props: HeaderTextPartProps) {
           />
         )}
 
-        <Col xs={0} sm={0} md={20}>
+        <Col xs={0} sm={0} md={20} className="mt-[-4px]">
           <Space>
             <span
               className={`text-[15px] ${dashboardTextColor} cursor-pointer`}

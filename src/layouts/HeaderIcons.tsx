@@ -1,5 +1,9 @@
 import { StyleProps } from "@/common";
+import { PageRoutes } from "@/constants";
+import { useAppDispatch } from "@/hooks/redux";
+import { logoutAction } from "@/store";
 import { Avatar, Col, Dropdown, Space } from "antd";
+import { useRouter } from "next/router";
 import React from "react";
 import { AiOutlineBell, AiFillSetting } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
@@ -14,7 +18,9 @@ export type HeaderIconsProps = StyleProps & {
 const DEFAULT_PROPS = {} as const;
 
 export default function HeaderIcons(props: HeaderIconsProps) {
+  const dispatch = useAppDispatch();
   const p = { ...DEFAULT_PROPS, ...props };
+  const { push } = useRouter();
   return (
     <Col span={12} className="text-right">
       <Space size={15}>
@@ -28,11 +34,7 @@ export default function HeaderIcons(props: HeaderIconsProps) {
                 key: "1",
                 label: "Notifications",
                 icon: <AiOutlineBell />,
-              },
-              {
-                key: "1.1",
-                label: "Communication",
-                icon: <BsMegaphone />,
+                onClick: () => push(PageRoutes.NOTIFICATIONS),
               },
               {
                 type: "divider",
@@ -41,11 +43,13 @@ export default function HeaderIcons(props: HeaderIconsProps) {
                 key: "2",
                 label: "Profile",
                 icon: <CgProfile />,
+                onClick: () => push(PageRoutes.PROFILE),
               },
               {
                 key: "3",
                 label: "Settings",
                 icon: <AiFillSetting />,
+                onClick: () => push(PageRoutes.SETTINGS),
               },
               {
                 type: "divider",
@@ -54,6 +58,9 @@ export default function HeaderIcons(props: HeaderIconsProps) {
                 key: "4",
                 label: "Sign Out",
                 icon: <FaSignOutAlt />,
+                onClick: () => {
+                  dispatch(logoutAction());
+                },
               },
             ],
           }}

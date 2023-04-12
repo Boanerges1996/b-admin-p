@@ -8,4 +8,5 @@ export const PageRoutes = {
   CHATS: "/dashboard/extras/chats",
   PROFILE: "/dashboard/extras/profile",
   SETTINGS: "/dashboard/extras/settings",
+  HOME: "/",
 };
